@@ -16,7 +16,6 @@ fn parse_input_part2(input: &String) -> i32 {
     } else {
         0
     };
-    println!("{:?}, {:?}", input, res);
     res
 }
 
@@ -37,13 +36,11 @@ fn pair_is_overlapping(p1: String, p2: String) -> bool {
         return true;
     }
 
-    if (p1_start >= p2_start && p1_start <= p2_end) || (p1_end <= p2_start && p1_end >= p2_end)
-    {
+    if (p1_start >= p2_start && p1_start <= p2_end) || (p1_end <= p2_start && p1_end >= p2_end) {
         return true;
     }
 
-    if (p2_start >= p1_start && p2_start <= p1_end) || (p2_end <= p1_start && p2_end >= p1_end)
-    {
+    if (p2_start >= p1_start && p2_start <= p1_end) || (p2_end <= p1_start && p2_end >= p1_end) {
         return true;
     }
 
