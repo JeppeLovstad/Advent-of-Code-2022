@@ -43,7 +43,7 @@ impl Pile {
         let (_, mut from_stack) = self.stack_to_id.remove_entry(&from).unwrap();
         let (_, mut to_stack) = self.stack_to_id.remove_entry(&to).unwrap();
 
-        for i in 0..amount {
+        for _ in 0..amount {
             let popped_element = from_stack.pop();
             to_stack.push(popped_element.unwrap());
         }
@@ -84,7 +84,7 @@ fn main() {
         pile2.perform_operation2(amount, from, to)
     }
 
-    for i in (0..pile2.stack_to_id.len()) {
+    for i in 0..pile2.stack_to_id.len() {
         println!("{:?}", pile2.stack_to_id.get(&i));
     }
 }
@@ -162,21 +162,6 @@ fn transpose2<T>(v: Vec<Vec<T>>) -> Vec<Vec<T>> {
         .collect()
 }
 
-// fn populate_pile(pile: Pile, stacks_lines: &[String]) -> Pile {
-//     for line in stacks_lines {
-//         let clean_line = line.replace('[', "").replace(']', "");
-//         let crates = split_string_into_crates(clean_line);
-//         for (i, id) in crates.into_iter().enumerate() {
-//             println!("{:?} {:?}", clean_crate_string(&id), i);
-//             let new_crate = Crate { id: id };
-//             let stack = pile.stack_to_id.get(&i).unwrap();
-//             stack.crates.push(new_crate);
-//         }
-//         println!("");
-//     }
-//     pile
-// }
-
 fn split_string_into_crates(line: String) -> Vec<String> {
     line.as_bytes()
         .chunks(2)
@@ -201,10 +186,6 @@ fn create_pile(stacks: Vec<Vec<String>>) -> Pile {
         stack_to_id: HashMap::from_iter(stack_tuples.map(|x| (x.id, x))),
     };
     pile
-}
-
-fn parse_string_to_int(input_string: &str) -> i32 {
-    input_string.parse::<i32>().unwrap()
 }
 
 fn prepare_input() -> Vec<String> {

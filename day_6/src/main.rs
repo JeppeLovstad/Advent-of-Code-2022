@@ -3,15 +3,15 @@ use std::collections::{HashMap, VecDeque};
 
 fn main() {
     let input = &prepare_input()[0];
-    let start_marker = find_start_of_packet_marker(input.to_string());
+    let start_marker = find_start_of_message_marker(input.to_string(), 4);
     println!("{:?}", start_marker);
 
-    let start_marker = find_start_of_message_marker(input.to_string());
+    let start_marker = find_start_of_message_marker(input.to_string(), 14);
     println!("{:?}", start_marker);
 }
 
-fn find_start_of_message_marker(input: String) -> i32 {
-    let mut deque: VecDeque<char> = VecDeque::with_capacity(14);
+fn find_start_of_message_marker(input: String, capacity: i32) -> i32 {
+    let mut deque: VecDeque<char> = VecDeque::with_capacity(capacity as usize);
     let mut hashmap: HashMap<char, i32> = HashMap::new();
 
     let input_chars = input
@@ -23,7 +23,7 @@ fn find_start_of_message_marker(input: String) -> i32 {
     for (cs, i) in input_chars {
         deque.push_back(cs);
         (*(hashmap.entry(cs).or_insert(0))) += 1;
-        if deque.len() == deque.capacity() {
+        if deque.len() == capacity as usize + 1 {
             let popped_val = deque.pop_front().unwrap();
             hashmap.entry(popped_val).and_modify(|x| *x -= 1);
             if hashmap[&popped_val] == 0 {
@@ -31,29 +31,8 @@ fn find_start_of_message_marker(input: String) -> i32 {
             }
         }
 
-        if hashmap.values().sum::<i32>() == 14 && hashmap.len() == 14 {
+        if hashmap.values().sum::<i32>() == capacity && hashmap.len() == capacity as usize {
             return i as i32 + 1;
-        }
-    }
-    -1
-}
-
-fn find_start_of_packet_marker(input: String) -> i32 {
-    let input_chars: Vec<char> = input.chars().collect();
-
-    for (i, cs) in input_chars.windows(4).enumerate() {
-        let (first, second, third, fourth) = (cs[0], cs[1], cs[2], cs[3]);
-
-        if first == second
-            || first == third
-            || first == fourth
-            || second == third
-            || second == fourth
-            || third == fourth
-        {
-            continue;
-        } else {
-            return i as i32 + 4;
         }
     }
     -1
